@@ -13,7 +13,7 @@ class CachedImage(tiledimage.TiledImage):
         dir will be removed when disposal is True.
         """
         logger = logging.getLogger()
-        super(CachedImage, self).__init__(tilesize)
+        super(CachedImage, self).__init__(tilesize, dtype=dtype)
         self.fileext = fileext
         self.bgcolor = bgcolor
         self.disposal = disposal
