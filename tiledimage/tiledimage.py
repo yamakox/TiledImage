@@ -42,8 +42,9 @@ class TiledImage():
     size is determined by the tiles.
     !!!   it is better to fix the tile size. (128x128, for example)
     """
-    def __init__(self, tilesize=128, bgcolor=(100,100,100)):
+    def __init__(self, tilesize=128, dtype=np.uint8, bgcolor=(100,100,100)):
         self.tiles = dict()
+        self.dtype = dtype
         if type(tilesize) is int:
             self.tilesize = (tilesize, tilesize)
         else:
@@ -77,7 +78,7 @@ class TiledImage():
         if region is None:
             region = self.region
         xrange, yrange = region
-        image = np.zeros((yrange[1]-yrange[0], xrange[1] - xrange[0], 3), dtype=np.uint8)
+        image = np.zeros((yrange[1]-yrange[0], xrange[1] - xrange[0], 3), dtype=self.dtype)
         image[:,:] = self.bgcolor
         for tile, overlap in self.tiles_containing(region):
             #logger.debug("Should get a tile at {0} {1}".format(tile,self.tiles))
@@ -99,7 +100,7 @@ class TiledImage():
         region = (xrange,yrange)
         for tile, overlap in self.tiles_containing(region, includeempty=True):
             if tile not in self.tiles:
-                self.tiles[tile] = np.zeros((self.tilesize[1], self.tilesize[0], 3), dtype=np.uint8)
+                self.tiles[tile] = np.zeros((self.tilesize[1], self.tilesize[0], 3), dtype=self.dtype)
                 self.tiles[tile][:,:] = self.bgcolor
             src = self.tiles[tile]
             originx, originy = tile

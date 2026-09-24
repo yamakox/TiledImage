@@ -47,7 +47,7 @@ class TileCache():
         except KeyError:
             filename = self.key_to_filename(key)
             if os.path.exists(filename):
-                value = cv2.imread(filename)
+                value = cv2.imread(filename, cv2.IMREAD_UNCHANGED)
                 self.nmiss += 1
                 #logger.info("cache miss key:{0}".format(key))
             else:

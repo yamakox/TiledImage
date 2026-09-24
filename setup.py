@@ -31,7 +31,7 @@ setup(name='TiledImage',
       license='MIT',
       packages=['tiledimage',
                 ],
-      install_requires=['numpy', 'pylru', ],
+      install_requires=['numpy', 'pylru', 'opencv-python-headless',],
       entry_points = {
               'console_scripts': [
                   'pngs2 = tiledimage.pngs2:main',

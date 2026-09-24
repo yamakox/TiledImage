@@ -3,9 +3,10 @@ import cv2
 import numpy as np
 from tiledimage import tilecache
 from tiledimage import tiledimage
+import shutil
 
 class CachedImage(tiledimage.TiledImage):
-    def __init__(self, mode, dir="image.pngs", tilesize=128, cachesize=10, fileext="png", bgcolor=(0,0,0), hook=None, disposal=False):
+    def __init__(self, mode, dir="image.pngs", tilesize=128, cachesize=10, fileext="png", bgcolor=(0,0,0), hook=None, disposal=False, dtype=np.uint8):
         """
         if mode == "new", flush the dir.
         hook is a function like put_image, that is called then a tile is rewritten.
@@ -25,7 +26,7 @@ class CachedImage(tiledimage.TiledImage):
                 self.tilesize  = [int(x) for x in file.readline().split()[:2]]
                 self.bgcolor   = [int(x) for x in file.readline().split()[:3]]
                 self.fileext   = file.readline().split()[0]
-        defaulttile = np.zeros((self.tilesize[1],self.tilesize[0],3), dtype=np.uint8)
+        defaulttile = np.zeros((self.tilesize[1],self.tilesize[0],3), dtype=dtype)
         self.bgcolor = np.array(self.bgcolor)
         #logger.info("Color: {0}".format(self.bgcolor))
         defaulttile[:,:,:] = self.bgcolor[:3]
@@ -55,7 +56,7 @@ class CachedImage(tiledimage.TiledImage):
         Destructor
         """
         if self.disposal:
-            rmdir(self.dir)
+            shutil.rmtree(self.dir)
         else:
             self.write_info()
             
